@@ -1,0 +1,33 @@
+.on-dot {
+  height: 25px;
+  width: 25px;
+  background-color: #000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.off-dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.select-dot {
+  height: 25px;
+  width: 25px;
+  background-color: #ff0000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot--once {
+  animation: blink 2s 1;
+}
+
+@keyframes blink {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
