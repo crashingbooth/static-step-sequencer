@@ -11,8 +11,6 @@ document.getElementById("action-button").addEventListener("click", function() {
 const bPat1 = [1,0,0,0, 1,1,0,0, 1,0,0,0, 1,1,0,0];
 const bPat2 = [0,0,1,0, 0,0,1,1, 0,0,1,0, 0,0,1,1];
 
-
-
 const myDiv = document.getElementById("dots-go-here");
 const replacement = document.createElement('div');
 
@@ -25,40 +23,24 @@ for (let i = 0; i < 16; i++) {
 }
 myDiv.parentNode.replaceChild(replacement, myDiv);
 
-let noteSelect = document.getElementById('note-select');
-let rhythm = ["4n", "8n", "8n", "4n", "4n"];
 
 
-
-const sequenceBinaryPattern = (binaryPattern, synth, note) => {
-  return (time) => {
-    binaryPattern.forEach((item, i) => {
-      if (item) {
-        const dTime = Tone.Time("16n").toSeconds()
-        synth.triggerAttackRelease(note, "16n", time + (dTime * i))
-				scheduleBlink(dots[5], 1000);
-      }
-    });
-  }
-}
-
-
-
+let i = 0;
 const play = () => {
   const synthA = new Tone.MembraneSynth().toDestination();
   const synthB = new Tone.MembraneSynth().toDestination();
 
-  const lineA = sequenceBinaryPattern(bPat1,synthA,"C3");
-  const lineB = sequenceBinaryPattern(bPat2,synthA,"E4");
   const loopA = new Tone.Loop((time) => {
-    lineA(time);
-    lineB(time);
-
-  }, "1m").start(0);
+    if (bPat1[i % 16]) {
+      synthA.triggerAttackRelease("C3", "16n", time);
+    }
+    dots[i % 16].classList.remove('dot--once');
+    dots[i % 16].classList.add('dot--once');
+    if (bPat2[i % 16])
+      synthB.triggerAttackRelease("E4", "16n", time);
+    i += 1;
+    if (i >= 16) { i = 0};
+  }, "16n").start(0);
 
   Tone.Transport.start();
 };
-
-function scheduleBlink(dot, interval) {
-	setInterval(() => dot.classList.add('dot--once'), interval );
-}
