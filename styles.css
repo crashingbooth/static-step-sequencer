@@ -31,5 +31,5 @@
 }
 
 .dot--once {
-  animation: blink 0.1s 1;
+  animation: blink 0.5s 1;
 }

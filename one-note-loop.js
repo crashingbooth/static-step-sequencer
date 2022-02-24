@@ -35,6 +35,7 @@ const play = () => {
       synthA.triggerAttackRelease("C3", "16n", time);
     }
     dots[i % 16].classList.remove('dot--once');
+    void dots[i % 16].offsetWidth;
     dots[i % 16].classList.add('dot--once');
     if (bPat2[i % 16])
       synthB.triggerAttackRelease("E4", "16n", time);
