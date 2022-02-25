@@ -10,20 +10,29 @@ document.getElementById("action-button").addEventListener("click", function() {
 
 const bPat1 = [1,0,0,0, 1,1,0,0, 1,0,0,0, 1,1,0,0];
 const bPat2 = [0,0,1,0, 0,0,1,1, 0,0,1,0, 0,0,1,1];
+const patterns = [bPat1, bPat2];
 
-const myDiv = document.getElementById("dots-go-here");
+const originalDiv = document.getElementById("dots-go-here");
 const replacement = document.createElement('div');
 
 let dots = [];
-for (let i = 0; i < 16; i++) {
-  const dot = document.createElement('span')
-  dot.className =  bPat1[i] ? 'on-dot' : 'off-dot';
-	dots.push(dot);
-  replacement.appendChild(dot);
+for (let pat of patterns) {
+	console.log("pat");
+	let subDiv = document.createElement('div');
+	// let break = document.createElement("br");
+	let dotLine = [];
+	for (let i = 0; i < 16; i++) {
+	  const dot = document.createElement('span')
+	  dot.className =  pat[i] ? 'on-dot' : 'off-dot';
+		dotLine.push(dot);
+	  subDiv.appendChild(dot);
+	}
+	dots.push(dotLine);
+	replacement.appendChild(subDiv);
+	// replacement.appendChild(break);
+
 }
-myDiv.parentNode.replaceChild(replacement, myDiv);
-
-
+originalDiv.parentNode.replaceChild(replacement, originalDiv);
 
 let i = 0;
 const play = () => {
@@ -31,17 +40,21 @@ const play = () => {
   const synthB = new Tone.MembraneSynth().toDestination();
 
   const loopA = new Tone.Loop((time) => {
-    if (bPat1[i % 16]) {
-      synthA.triggerAttackRelease("C3", "16n", time);
-    }
-    dots[i % 16].classList.remove('dot--once');
-    void dots[i % 16].offsetWidth;
-    dots[i % 16].classList.add('dot--once');
-    if (bPat2[i % 16])
-      synthB.triggerAttackRelease("E4", "16n", time);
+		processLine(patterns[0],dots[0], synthA, "C3", i, time);
+		processLine(patterns[1],dots[1], synthB, "E4", i, time);
     i += 1;
     if (i >= 16) { i = 0};
   }, "16n").start(0);
 
   Tone.Transport.start();
 };
+
+
+function processLine(booleanLine, dots, synth, note, i, time) {
+	if (booleanLine[[i % 16]]) {
+		synth.triggerAttackRelease(note, "16n", time);
+		dots[i % 16].classList.remove('dot--once');
+    void dots[i % 16].offsetWidth;
+    dots[i % 16].classList.add('dot--once');
+	}
+}
