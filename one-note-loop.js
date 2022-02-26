@@ -19,7 +19,6 @@ let dots = [];
 for (let pat of patterns) {
 	console.log("pat");
 	let subDiv = document.createElement('div');
-	// let break = document.createElement("br");
 	let dotLine = [];
 	for (let i = 0; i < 16; i++) {
 	  const dot = document.createElement('span')
@@ -29,10 +28,19 @@ for (let pat of patterns) {
 	}
 	dots.push(dotLine);
 	replacement.appendChild(subDiv);
-	// replacement.appendChild(break);
-
 }
 originalDiv.parentNode.replaceChild(replacement, originalDiv);
+
+function createDotsFromPattern(pattern) {
+	let subDiv = document.createElement('div');
+	for (let i = 0; i < pattern.length; i++) {
+	  const dot = document.createElement('span')
+	  dot.className =  pat[i] ? 'on-dot' : 'off-dot';
+	  subDiv.appendChild(dot);
+	}
+	return subDiv;
+}
+
 
 let i = 0;
 const play = () => {
