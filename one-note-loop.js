@@ -12,10 +12,19 @@ document.getElementById("stop-button").addEventListener("click", function() {
   Tone.Transport.stop();
 });
 
+document.getElementById("swap-button").addEventListener("click", function() {
+  swapLoops();
+});
+
+
+
 const bPat1 = [1,0,0,0, 1,1,0,0, 1,0,0,0, 1,1,0,0];
 const bPat2 = [0,0,1,0, 0,0,1,1, 0,0,1,0, 0,0,1,1];
+const bPat3 = [1,0,0,1, 0,0,1,0, 0,1,0,0, 1,0,1,0];
+const bPat4 = [0,0,0,0, 0,0,0,0, 0,0,0,1, 0,1,0,1];
 const notes = ["C3", "E4"];
-const patterns = [bPat1, bPat2];
+let patterns = [bPat1, bPat2];
+let state = true;
 const synthA = new Tone.MembraneSynth().toDestination();
 const synthB = new Tone.MembraneSynth().toDestination();
 const synths = [synthA, synthB];
@@ -42,19 +51,35 @@ function createObjectBundleFromPattern(pat, note, synth) {
 				}
 }
 
+
 let lineBundles = [];
-let replacement = document.createElement('div');
-for (let i = 0; i < patterns.length; i++) {
-	let lineBundle = createObjectBundleFromPattern(patterns[i], notes[i], synths[i]);
-	console.log(lineBundle);
-	replacement.appendChild(lineBundle.dotsDiv);
-	lineBundles.push(lineBundle);
+function setNotes(patterns, notes, synths) {
+	lineBundles = [];
+	let replacement = document.createElement('div');
+	for (let i = 0; i < patterns.length; i++) {
+		let lineBundle = createObjectBundleFromPattern(patterns[i], notes[i], synths[i]);
+		console.log(lineBundle);
+		replacement.appendChild(lineBundle.dotsDiv);
+		lineBundles.push(lineBundle);
+	}
+	originalDiv.replaceChildren(replacement);
+	// originalDiv.parentNode.replaceChild(replacement, originalDiv);
 }
-originalDiv.parentNode.replaceChild(replacement, originalDiv);
+
+function swapLoops() {
+	patterns = state ? [bPat3, bPat4] : [bPat1, bPat2];
+	state = !state;
+	setNotes(patterns, notes, synths);
+}
+
+// execution at start
+setNotes(patterns, notes, synths);
 
 
+// play loop
 let i = 0;
 const play = () => {
+	console.log(lineBundles[0].pattern);
   const loopA = new Tone.Loop((time) => {
 		for (let lineBundle of lineBundles) {
 			processLineBundle(lineBundle, i, time);
