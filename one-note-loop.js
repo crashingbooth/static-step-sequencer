@@ -22,12 +22,14 @@ const bPat1 = [1,0,0,0, 1,1,0,0, 1,0,0,0, 1,1,0,0];
 const bPat2 = [0,0,1,0, 0,0,1,1, 0,0,1,0, 0,0,1,1];
 const bPat3 = [1,0,0,1, 0,0,1,0, 0,1,0,0, 1,0,1,0];
 const bPat4 = [0,0,0,0, 0,0,0,0, 0,0,0,1, 0,1,0,1];
-const notes = ["C3", "E4"];
-let patterns = [bPat1, bPat2];
+const bPat5 = [0,0,1,0, 0,0,1,0, 0,0,1,0, 0,0,1,0];
+const notes = ["C3", "C4", "G4"];
+let patterns = [bPat1, bPat2, bPat5];
 let state = true;
 const synthA = new Tone.MembraneSynth().toDestination();
 const synthB = new Tone.MembraneSynth().toDestination();
-const synths = [synthA, synthB];
+const synthC = new Tone.MembraneSynth().toDestination();
+const synths = [synthA, synthB, synthC];
 
 
 const originalDiv = document.getElementById("dots-go-here");
@@ -67,7 +69,7 @@ function setNotes(patterns, notes, synths) {
 }
 
 function swapLoops() {
-	patterns = state ? [bPat3, bPat4] : [bPat1, bPat2];
+	patterns = state ? [bPat3, bPat4, bPat5] : [bPat1, bPat2, bPat5];
 	state = !state;
 	setNotes(patterns, notes, synths);
 }
