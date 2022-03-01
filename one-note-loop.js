@@ -10,12 +10,20 @@ document.getElementById("action-button").addEventListener("click", function() {
 
 document.getElementById("stop-button").addEventListener("click", function() {
   Tone.Transport.stop();
+	loopA.cancel();
 });
 
 document.getElementById("swap-button").addEventListener("click", function() {
   swapLoops();
 });
 
+document.getElementById("random1-button").addEventListener("click", function() {
+  randomReplace(1);
+});
+
+document.getElementById("random2-button").addEventListener("click", function() {
+  randomReplace(2);
+});
 
 
 const bPat1 = [1,0,0,0, 1,1,0,0, 1,0,0,0, 1,1,0,0];
@@ -60,7 +68,6 @@ function setNotes(patterns, notes, synths) {
 	let replacement = document.createElement('div');
 	for (let i = 0; i < patterns.length; i++) {
 		let lineBundle = createObjectBundleFromPattern(patterns[i], notes[i], synths[i]);
-		console.log(lineBundle);
 		replacement.appendChild(lineBundle.dotsDiv);
 		lineBundles.push(lineBundle);
 	}
@@ -74,15 +81,23 @@ function swapLoops() {
 	setNotes(patterns, notes, synths);
 }
 
+function randomReplace(index) {
+	let pat = [];
+	for (let i = 0; i < 16; i++) {
+		pat.push(Math.round(Math.random()));
+	}
+	patterns[index] = pat;
+	setNotes(patterns, notes, synths);
+}
+
 // execution at start
 setNotes(patterns, notes, synths);
 
-
 // play loop
 let i = 0;
+let loopA;
 const play = () => {
-	console.log(lineBundles[0].pattern);
-  const loopA = new Tone.Loop((time) => {
+  loopA = new Tone.Loop((time) => {
 		for (let lineBundle of lineBundles) {
 			processLineBundle(lineBundle, i, time);
 		}
