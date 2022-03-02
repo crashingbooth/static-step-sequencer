@@ -31,12 +31,24 @@ const bPat2 = [0,0,1,0, 0,0,1,1, 0,0,1,0, 0,0,1,1];
 const bPat3 = [1,0,0,1, 0,0,1,0, 0,1,0,0, 1,0,1,0];
 const bPat4 = [0,0,0,0, 0,0,0,0, 0,0,0,1, 0,1,0,1];
 const bPat5 = [0,0,1,0, 0,0,1,0, 0,0,1,0, 0,0,1,0];
-const notes = ["C3", "C4", "G4"];
+const notes = ["C3", "C4", "C5"];
 let patterns = [bPat1, bPat2, bPat5];
 let state = true;
-const synthA = new Tone.MembraneSynth().toDestination();
-const synthB = new Tone.MembraneSynth().toDestination();
-const synthC = new Tone.MembraneSynth().toDestination();
+const synthA = new Tone.Sampler({
+	urls: {
+		C3: "audio/kick.mp3"
+	},
+	baseUrl: "https://raw.githubusercontent.com/crashingbooth/static-step-sequencer/main/"}).toDestination();
+const synthB = new Tone.Sampler({
+	urls: {
+		C3: "audio/hh.wav"
+	},
+	baseUrl: "https://raw.githubusercontent.com/crashingbooth/static-step-sequencer/main/"}).toDestination();
+const synthC = new Tone.Sampler({
+	urls: {
+		C3: "audio/hh.wav"
+	},
+	baseUrl: "https://raw.githubusercontent.com/crashingbooth/static-step-sequencer/main/"}).toDestination();
 const synths = [synthA, synthB, synthC];
 
 
